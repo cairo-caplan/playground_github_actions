@@ -30,9 +30,9 @@ jobs:
         run: | 
           printf "Listing some directories\n\n"
           echo "/usr/local/lib/ :"
-          du -ah /usr/local/lib/ | sort -rh 
+          du -ah --max-depth=1 /usr/local/lib/ | sort -rh 
           echo "Listing some directories"
-          du -ah /usr/share/ | sort -rh
+          du -ah --max-depth=1 /usr/share/ | sort -rh
 
       - name: Removing extra files
         run: |
@@ -45,9 +45,9 @@ jobs:
           du -sh /usr/share/dotnet
           echo "Removing dotnet"
           sudo rm -rf /usr/share/dotnet
-          echo "Google Cloud SDK"
-          du -sh /usr/share/google-cloud-sdk
-          sudo rm -rf /usr/share/google-cloud-sdk
+          # echo "Google Cloud SDK"
+          # du -sh /usr/share/google-cloud-sdk
+          # sudo rm -rf /usr/share/google-cloud-sdk
 
           
       - name: Final Disk Space

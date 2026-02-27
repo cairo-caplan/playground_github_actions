@@ -46,6 +46,7 @@ jobs:
           echo "Removing dotnet"
           sudo rm -rf /usr/share/dotnet
           echo "Google Cloud SDK"
+          du -sh /usr/share/google-cloud-sdk
           sudo rm -rf /usr/share/google-cloud-sdk
 
           

@@ -1,0 +1,38 @@
+name: Disk Space Cleanup Check
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  check-disk:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Initial disk space
+        run: |
+          echo "### Initial disk usage" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          df -h / | grep -E "Filesystem|/" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          df -h /
+
+      - name: Listing some directories
+        run: | 
+          echo "Listing some directories"
+          ls -l /usr/local/lib/
+          ls -l /usr/share/
+
+      - name: Removing Android and dotnet
+        run: |
+          echo "Removing Android and dotnet"
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          
+      - name: Final Disk Space
+        run: |
+          echo "### Post-Cleanup Disk Usage" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          df -h / | grep -E "Filesystem|/" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          df -h /

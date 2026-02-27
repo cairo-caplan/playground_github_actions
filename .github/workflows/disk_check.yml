@@ -1,7 +1,7 @@
 name: Disk Space Cleanup Check
 
 on: 
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
@@ -9,6 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Machine information
+        run: |
+          echo "OS version:"
+          lsb_release -a
+          echo "Memory and SWAP:"
+          free -mh
+          echo "CPU info"
+          lscpu
+
       - name: Initial disk space
         run: |
           echo "### Initial disk usage" >> $GITHUB_STEP_SUMMARY
@@ -19,15 +28,26 @@ jobs:
 
       - name: Listing some directories
         run: | 
+          printf "Listing some directories\n\n"
+          echo "/usr/local/lib/ :"
+          ls /usr/local/lib/
           echo "Listing some directories"
-          ls -l /usr/local/lib/
-          ls -l /usr/share/
+          ls /usr/share/
 
-      - name: Removing Android and dotnet
+      - name: Removing extra files
         run: |
-          echo "Removing Android and dotnet"
+          echo "Get Android disk usage"
+          du -sh /usr/local/lib/android
+          echo "Removing Android"
           sudo rm -rf /usr/local/lib/android
+
+          echo "Get Android disk usage"
+          du -sh /usr/share/dotnet
+          echo "Removing dotnet"
           sudo rm -rf /usr/share/dotnet
+          echo "Google Cloud SDK"
+          sudo rm -rf /usr/share/google-cloud-sdk
+
           
       - name: Final Disk Space
         run: |
@@ -36,3 +56,7 @@ jobs:
           df -h / | grep -E "Filesystem|/" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           df -h /
+
+      - name: Dumb test
+        run: 
+          echo "2+3 = $((2+3))"

@@ -30,9 +30,9 @@ jobs:
         run: | 
           printf "Listing some directories\n\n"
           echo "/usr/local/lib/ :"
-          ls /usr/local/lib/
+          du -ah /usr/local/lib/ | sort -rh 
           echo "Listing some directories"
-          ls /usr/share/
+          du -ah /usr/share/ | sort -rh
 
       - name: Removing extra files
         run: |
